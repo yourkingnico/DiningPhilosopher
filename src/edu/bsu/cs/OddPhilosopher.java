@@ -7,14 +7,14 @@ public class OddPhilosopher extends EvenPhilosopher implements Runnable {
     }
 
     public void beginPhilosopher(){
-        while(MiscSubs.TotalEats <= MiscSubs.MAX_EATS){
+        while(EatingControl.TotalEats <= EatingControl.MAX_EATS){
             think();
-            if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
+            if(EatingControl.TotalEats >= EatingControl.MAX_EATS){
                 break;
             }
             // takes chopsticks in order for odd philosophers to avoid deadlock
             takeSticks();
-            if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
+            if(EatingControl.TotalEats >= EatingControl.MAX_EATS){
                 //returns chopsticks to avoid deadlock at the very end
                 RIGHT_CHOPSTICK.returnChopstick();
                 LEFT_CHOPSTICK.returnChopstick();

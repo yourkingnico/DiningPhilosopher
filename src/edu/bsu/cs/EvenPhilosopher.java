@@ -23,14 +23,14 @@ public class EvenPhilosopher implements Runnable {
     }
 
     public void beginPhilosopher(){
-        while(MiscSubs.TotalEats <= MiscSubs.MAX_EATS){
+        while(EatingControl.TotalEats <= EatingControl.MAX_EATS){
             think();
-            if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
+            if(EatingControl.TotalEats >= EatingControl.MAX_EATS){
                 break;
             }
             // takes chopsticks in order for even philosophers to avoid deadlock
             takeSticks();
-            if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
+            if(EatingControl.TotalEats >= EatingControl.MAX_EATS){
                 //returns chopsticks to avoid deadlock at the very end
                 RIGHT_CHOPSTICK.returnChopstick();
                 LEFT_CHOPSTICK.returnChopstick();
@@ -44,7 +44,7 @@ public class EvenPhilosopher implements Runnable {
 
     void think(){
         System.out.println("Philosopher " + PHILOSOPHER_ID + " is thinking");
-        MiscSubs.RandomDelay();
+        EatingControl.RandomDelay();
     }
 
     public void takeSticks(){
@@ -58,10 +58,10 @@ public class EvenPhilosopher implements Runnable {
     }
 
     void eat(){
-        MiscSubs.StartEating(PHILOSOPHER_ID);
+        EatingControl.StartEating(PHILOSOPHER_ID);
         System.out.println("Philosopher " + PHILOSOPHER_ID + " is eating");
-        MiscSubs.RandomDelay();
-        MiscSubs.DoneEating(PHILOSOPHER_ID);
+        EatingControl.RandomDelay();
+        EatingControl.DoneEating(PHILOSOPHER_ID);
     }
 
     private synchronized void setInUse(boolean inUse) {
