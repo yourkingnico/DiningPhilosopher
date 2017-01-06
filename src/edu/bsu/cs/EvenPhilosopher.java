@@ -1,14 +1,13 @@
 package edu.bsu.cs;
 
-
-public class Philosopher implements Runnable {
+public class EvenPhilosopher implements Runnable {
 
     private final int PHILOSOPHER_ID;
-    private final Chopstick LEFT_CHOPSTICK;
-    private final Chopstick RIGHT_CHOPSTICK;
+    final Chopstick LEFT_CHOPSTICK;
+    final Chopstick RIGHT_CHOPSTICK;
     boolean isInUse = false;
 
-    public Philosopher(int philosopherId, Chopstick leftChopstick, Chopstick rightChopstick){
+    EvenPhilosopher(int philosopherId, Chopstick leftChopstick, Chopstick rightChopstick){
         this.PHILOSOPHER_ID = philosopherId;
         this.LEFT_CHOPSTICK = leftChopstick;
         this.RIGHT_CHOPSTICK = rightChopstick;
@@ -19,23 +18,18 @@ public class Philosopher implements Runnable {
         // conditional variable set to true
         setInUse(true);
         // runs even or odd specified to implement asymmetric chopstick taking
-        if(PHILOSOPHER_ID % 2 == 0){
-            runEven();
-        }
-        else {
-            runOdd();
-        }
+        beginPhilosopher();
         setInUse(false);
     }
 
-    private void runEven(){
+    public void beginPhilosopher(){
         while(MiscSubs.TotalEats <= MiscSubs.MAX_EATS){
             think();
             if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
                 break;
             }
             // takes chopsticks in order for even philosophers to avoid deadlock
-            takeEven();
+            takeSticks();
             if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
                 //returns chopsticks to avoid deadlock at the very end
                 RIGHT_CHOPSTICK.returnChopstick();
@@ -48,43 +42,12 @@ public class Philosopher implements Runnable {
         }
     }
 
-    private void runOdd(){
-        while(MiscSubs.TotalEats <= MiscSubs.MAX_EATS){
-            think();
-            if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
-                break;
-            }
-            // takes chopsticks in order for odd philosophers to avoid deadlock
-            takeOdd();
-            if(MiscSubs.TotalEats >= MiscSubs.MAX_EATS){
-                //returns chopsticks to avoid deadlock at the very end
-                RIGHT_CHOPSTICK.returnChopstick();
-                LEFT_CHOPSTICK.returnChopstick();
-                break;
-            }
-            eat();
-            RIGHT_CHOPSTICK.returnChopstick();
-            LEFT_CHOPSTICK.returnChopstick();
-        }
-    }
-
-    private void think(){
+    void think(){
         System.out.println("Philosopher " + PHILOSOPHER_ID + " is thinking");
         MiscSubs.RandomDelay();
     }
 
-    private void takeOdd(){
-        try {
-            //asymmetric chopstick taking
-            LEFT_CHOPSTICK.takeChopstick();
-            RIGHT_CHOPSTICK.takeChopstick();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void takeEven(){
+    public void takeSticks(){
         try {
             //asymmetric chopstick taking
             RIGHT_CHOPSTICK.takeChopstick();
@@ -94,19 +57,19 @@ public class Philosopher implements Runnable {
         }
     }
 
-    private void eat(){
+    void eat(){
         MiscSubs.StartEating(PHILOSOPHER_ID);
         System.out.println("Philosopher " + PHILOSOPHER_ID + " is eating");
         MiscSubs.RandomDelay();
         MiscSubs.DoneEating(PHILOSOPHER_ID);
     }
 
-    public synchronized void setInUse(boolean inUse) {
+    private synchronized void setInUse(boolean inUse) {
         isInUse = inUse;
         notify();
     }
 
-    public synchronized boolean isInUse() {
+    synchronized boolean isInUse() {
         return isInUse;
     }
 }
