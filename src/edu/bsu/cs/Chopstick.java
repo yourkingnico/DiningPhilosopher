@@ -1,4 +1,4 @@
-package edu.bsu.cs376;
+package edu.bsu.cs;
 
 public class Chopstick {
 
@@ -9,7 +9,7 @@ public class Chopstick {
     }
 
     public synchronized void returnChopstick() {
-        //makes chopstick available and notifies
+        //makes chopstick available and notifies threads
         isInUse = false;
         notify();
     }

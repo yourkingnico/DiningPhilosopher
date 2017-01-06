@@ -1,4 +1,4 @@
-package edu.bsu.cs376;
+package edu.bsu.cs;
 
 import java.util.Random;
 import java.lang.Thread;

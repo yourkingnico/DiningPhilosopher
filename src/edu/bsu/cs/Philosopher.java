@@ -1,4 +1,4 @@
-package edu.bsu.cs376;
+package edu.bsu.cs;
 
 
 public class Philosopher implements Runnable {
